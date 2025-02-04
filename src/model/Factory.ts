@@ -46,13 +46,11 @@ export class Factory<TProductMeta extends IProductMeta>
   }
 
   private onProduced() {
-    this.storage.add(this.productMeta, 1);
+    this.storage.add(1);
     console.log(
       `Produced '${1}' unit of '${
         this.productMeta.name
-      }'. Store now contains '${this.storage.findAmount(
-        this.productMeta
-      )}' units.`
+      }'. Store now contains '${this.storage.amount}' units.`
     );
   }
 }
