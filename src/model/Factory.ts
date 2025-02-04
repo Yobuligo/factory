@@ -3,12 +3,20 @@ import { IProductMeta } from "./IProductionMeta";
 import { IStorage } from "./IStorage";
 import { Storage } from "./Storage";
 
-export class Factory<TProductMeta extends IProductMeta> implements IFactory {
+export class Factory<TProductMeta extends IProductMeta>
+  implements IFactory<TProductMeta>
+{
   private _isRunning: boolean = false;
   private _storage: IStorage = new Storage();
   private intervalId: number | undefined = undefined;
 
-  constructor(private readonly productMeta: TProductMeta) {}
+  constructor(readonly productMeta: TProductMeta) {
+    this.start();
+  }
+
+  get name(): string {
+    return this.productMeta.name;
+  }
 
   get isRunning(): boolean {
     return this._isRunning;
@@ -19,6 +27,10 @@ export class Factory<TProductMeta extends IProductMeta> implements IFactory {
   }
 
   start(): void {
+    if (this._isRunning) {
+      return;
+    }
+
     this._isRunning = true;
     this.intervalId = setInterval(
       () => this.onProduced(),
